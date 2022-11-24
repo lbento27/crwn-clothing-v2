@@ -1,0 +1,56 @@
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; // eslint-disable-line
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: 'AIzaSyC9O46IYMAUDJAnFAyzpu62jtO6Vf4YIhA',
+  authDomain: 'crwn-clothing-v2-190d1.firebaseapp.com',
+  projectId: 'crwn-clothing-v2-190d1',
+  storageBucket: 'crwn-clothing-v2-190d1.appspot.com',
+  messagingSenderId: '818311401882',
+  appId: '1:818311401882:web:783ebb0c531dc67ecbaa23',
+};
+
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+
+// Initialize Firebase
+const firebaseApp = initializeApp(firebaseConfig); // eslint-disable-line
+
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+  prompt: 'select_account',
+});
+
+export const auth = getAuth();
+export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+
+export const db = getFirestore(); //create db
+
+export const createUserDocumentFromAuth = async (userAuth) => {
+  const userDocRef = doc(db, 'users', userAuth.uid); //users collection, document-uid we get from the object we receive when click in login with google button
+  //console.log(userDocRef);
+
+  const userSnapShot = await getDoc(userDocRef); // we can check if a instance exist with the method .exist() and access the data
+  //console.log(userSnapShot);
+
+  //if user data does not exists
+  //create/set the document with the data from userAuth in my collection
+  if (!userSnapShot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+    //set document
+    try {
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+      });
+    } catch (error) {
+      console.log('error creating the user', error.message);
+    }
+  }
+
+  //if user data exists
+  return userDocRef;
+  //return userDocRef
+};
