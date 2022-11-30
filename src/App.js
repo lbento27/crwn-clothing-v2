@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navigation from './routes/navigation/navigation.component';
 import Home from './routes/home/home.component';
 import Authentication from './routes/authentication/authentication.component';
+import Shop from './routes/shop/shop.component';
 
 const App = () => {
   //index makes the 'default' component to render with the parent in the parent path
@@ -11,7 +12,8 @@ const App = () => {
     <Routes>
       <Route path='/' element={<Navigation />}>
         <Route index element={<Home />} />
-        <Route path='/auth' element={<Authentication />} />
+        <Route path='shop' element={<Shop />} />
+        <Route path='auth' element={<Authentication />} />
       </Route>
     </Routes>
   );
