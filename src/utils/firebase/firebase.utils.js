@@ -11,6 +11,8 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth'; /*eslint-enable*/
 
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs } from 'firebase/firestore';
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyC9O46IYMAUDJAnFAyzpu62jtO6Vf4YIhA',
@@ -20,8 +22,6 @@ const firebaseConfig = {
   messagingSenderId: '818311401882',
   appId: '1:818311401882:web:783ebb0c531dc67ecbaa23',
 };
-
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig); // eslint-disable-line
@@ -85,3 +85,39 @@ export const signOutUser = async () => await signOut(auth);
 export const onAuthStateChangedListener = (callback) => {
   onAuthStateChanged(auth, callback);
 }; //runs the callback every time the user signs in or out
+
+//send our data to database
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+  const collectionRef = collection(db, collectionKey);
+
+  const batch = writeBatch(db);
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.log('done');
+};
+
+//retrieve data from database
+/*{
+  hats:{
+    title:'Hats',
+    items: [{},{}]
+  }
+}
+*/
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, 'categories');
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  //querySnapshot.docs this gives us the documents but we want in the format above so:
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+  return categoryMap;
+};
