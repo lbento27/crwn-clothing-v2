@@ -1,4 +1,4 @@
-import './product-card.styles.scss';
+import { Footer, Name, Price, ProductCartContainer } from './product-card.styles';
 
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 
@@ -12,16 +12,16 @@ const ProductCard = ({ product }) => {
   const addProductToCart = () => addItemToCart(product);
 
   return (
-    <div className='product-card-container'>
+    <ProductCartContainer>
       <img src={imageUrl} alt={`${name}`} />
-      <div className='footer'>
-        <span className='name'>{name}</span>
-        <span className='price'>{price}</span>
-      </div>
+      <Footer>
+        <Name>{name}</Name>
+        <Price>{price}</Price>
+      </Footer>
       <Button buttonType={BUTTON_TYPE_CLASSES.inverted} onClick={addProductToCart}>
         Add to cart
       </Button>
-    </div>
+    </ProductCartContainer>
   );
 };
 
