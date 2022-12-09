@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect, useReducer } from 'react'; // eslint-disable-line
 
+import { createAction } from '../utils/reducer/reducer.utils';
+
 const addCartItem = (cartItems, productToAdd) => {
   //find if cartItems contains productToAdd
   const existingCartItem = cartItems.find((cartItem) => cartItem.id === productToAdd.id);
@@ -83,10 +85,13 @@ export const CartProvider = ({ children }) => {
     const newCartCount = newCartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
     const newCartTotal = newCartItems.reduce((total, cartItem) => total + cartItem.quantity * cartItem.price, 0);
 
-    dispatch({
-      type: CART_ACTIONS_TYPES.SET_CART_ITEMS,
-      payload: { cartItems: newCartItems, cartTotal: newCartTotal, cartCount: newCartCount },
-    });
+    dispatch(
+      createAction(CART_ACTIONS_TYPES.SET_CART_ITEMS, {
+        cartItems: newCartItems,
+        cartTotal: newCartTotal,
+        cartCount: newCartCount,
+      }),
+    );
     /*
     generate newCartTotal
     generate newCartCount
@@ -99,7 +104,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const setIsCartOpen = (bool) => {
-    dispatch({ type: CART_ACTIONS_TYPES.SET_IS_CART_OPEN, payload: bool });
+    dispatch(createAction(CART_ACTIONS_TYPES.SET_IS_CART_OPEN, bool));
   };
   //end reducer helper functions
 
