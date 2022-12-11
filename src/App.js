@@ -1,5 +1,11 @@
-//import React from 'react';//i do this to have react snippets in vscode
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
 import { Routes, Route } from 'react-router-dom';
+
+import { onAuthStateChangedListener, createUserDocumentFromAuth } from './utils/firebase/firebase.utils';
+
+import { setCurrentUser } from './store/user/user.action';
 
 import Navigation from './routes/navigation/navigation.component';
 import Home from './routes/home/home.component';
@@ -8,6 +14,19 @@ import Shop from './routes/shop/shop.component';
 import Checkout from './routes/checkout/checkout.component';
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
+      if (user) {
+        createUserDocumentFromAuth(user);
+      }
+      dispatch(setCurrentUser(user));
+    });
+    return unsubscribe;
+  }, []); // eslint-disable-line
+  //we don't need to pass where [dispatch], its only for the lint error to disappear, dispatch never change its the same as []
+
   //index makes the 'default' component to render with the parent in the parent path
   return (
     <Routes>

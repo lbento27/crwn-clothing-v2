@@ -10,4 +10,4 @@ const composedEnhancers = compose(applyMiddleware(...middleware));
 
 //root-reducer
 
-export const store = createStore(rootReducer, undefined, middleware); //undefine because the second argument its for additional default states
+export const store = createStore(rootReducer, undefined, composedEnhancers); //undefine because the second argument its for additional default states
