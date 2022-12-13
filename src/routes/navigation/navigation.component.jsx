@@ -1,11 +1,11 @@
-import { Fragment, useContext } from 'react'; // Fragment it replace a top level parent that react needs but its nos a html element
+import { Fragment } from 'react'; // Fragment it replace a top level parent that react needs but its nos a html element
 import { Outlet } from 'react-router-dom'; //outlet its where we want the Route children to render
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
 
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../store/user/user.selector';
-
-import { CartContext } from '../../contexts/cart.context';
+//import { CartContext } from '../../contexts/cart.context';
+import { selectIsCartOpen } from '../../store/cart/cart.selector';
 
 import { signOutUser } from '../../utils/firebase/firebase.utils';
 
@@ -17,9 +17,9 @@ import { NavigationContainer, LogoContainer, NavLinks, NavLink } from './navigat
 
 const Navigation = () => {
   //const currentUser = useSelector((state) => state.user.currentUser);
+  //const { isCartOpen } = useContext(CartContext);
   const currentUser = useSelector(selectCurrentUser);
-
-  const { isCartOpen } = useContext(CartContext);
+  const isCartOpen = useSelector(selectIsCartOpen);
 
   return (
     <Fragment>
