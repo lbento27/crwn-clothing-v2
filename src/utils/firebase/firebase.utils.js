@@ -114,10 +114,12 @@ export const getCategoriesAndDocuments = async () => {
 
   const querySnapshot = await getDocs(q);
   //querySnapshot.docs this gives us the documents but we want in the format above so:
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+  //down code migrate to categories selector
+  /*const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
     const { title, items } = docSnapshot.data();
     acc[title.toLowerCase()] = items;
     return acc;
   }, {});
-  return categoryMap;
+  return categoryMap;*/
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data()); //gives back the categories as an array
 };
