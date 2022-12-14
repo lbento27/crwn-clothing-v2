@@ -14,7 +14,8 @@ import { rootReducer } from './root-reducer';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['user'], //don't want to persist user reducer
+  //blacklist: ['user'], //don't want to persist user reducer and now categories because of thunk and spinner so better use whitelist
+  whitelist: ['cart'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
