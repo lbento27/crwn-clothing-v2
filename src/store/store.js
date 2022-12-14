@@ -3,24 +3,10 @@ import { compose, createStore, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; //in web browser will use local storage
 
-//import logger from 'redux-logger';
+import logger from 'redux-logger';
+//import { loggerMiddleware } from './middleware/logger';
 
 import { rootReducer } from './root-reducer';
-//creating our middleware, see curring
-
-const loggerMiddleware = (store) => (next) => (action) => {
-  if (!action.type) {
-    return next(action);
-  }
-
-  console.log('type: ', action.type);
-  console.log('payload: ', action.payload);
-  console.log('currentState: ', store.getState());
-
-  next(action);
-
-  console.log('nextState: ', store.getState());
-};
 
 //persist config  root=persist all
 const persistConfig = {
@@ -34,7 +20,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 //logger
 //middleware its a func that when we dispatch a action before the action hit the reducers, hits the middleware first
-const middleware = [loggerMiddleware];
+const middleware = [process.env.NODE_ENV === 'development' && logger].filter(Boolean); //.filter(Boolean) this makes that if the statement is false will get remove, ex [false] goes to empty [] if true will keep obj logger [logger]
 const composedEnhancers = compose(applyMiddleware(...middleware));
 
 //root-reducer
