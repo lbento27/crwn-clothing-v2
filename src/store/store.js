@@ -6,6 +6,8 @@ import storage from 'redux-persist/lib/storage'; //in web browser will use local
 import logger from 'redux-logger';
 //import { loggerMiddleware } from './middleware/logger';
 
+import thunk from 'redux-thunk';
+
 import { rootReducer } from './root-reducer';
 
 //persist config  root=persist all
@@ -20,7 +22,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 //logger
 //middleware its a func that when we dispatch a action before the action hit the reducers, hits the middleware first
-const middleware = [process.env.NODE_ENV !== 'production' && logger].filter(Boolean); //.filter(Boolean) this makes that if the statement is false will get remove, ex [false] goes to empty [] if true will keep obj logger [logger]
+const middleware = [process.env.NODE_ENV !== 'production' && logger, thunk].filter(Boolean); //.filter(Boolean) this makes that if the statement is false will get remove, ex [false] goes to empty [] if true will keep obj logger [logger]
 
 //to use with redux devtools extension in chrome
 const composedEnhancer =
