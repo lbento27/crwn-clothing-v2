@@ -6,7 +6,9 @@ import storage from 'redux-persist/lib/storage'; //in web browser will use local
 import logger from 'redux-logger';
 //import { loggerMiddleware } from './middleware/logger';
 
-import thunk from 'redux-thunk';
+//import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
+import { rootSaga } from './root-saga';
 
 import { rootReducer } from './root-reducer';
 
@@ -18,12 +20,14 @@ const persistConfig = {
   whitelist: ['cart'],
 };
 
+const sagaMiddleware = createSagaMiddleware();
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 //end persist
 
 //logger
 //middleware its a func that when we dispatch a action before the action hit the reducers, hits the middleware first
-const middleware = [process.env.NODE_ENV !== 'production' && logger, thunk].filter(Boolean); //.filter(Boolean) this makes that if the statement is false will get remove, ex [false] goes to empty [] if true will keep obj logger [logger]
+const middleware = [process.env.NODE_ENV !== 'production' && logger, sagaMiddleware].filter(Boolean); //.filter(Boolean) this makes that if the statement is false will get remove, ex [false] goes to empty [] if true will keep obj logger [logger]
 
 //to use with redux devtools extension in chrome
 const composedEnhancer =
@@ -36,5 +40,7 @@ const composedEnhancers = composedEnhancer(applyMiddleware(...middleware));
 //root-reducer
 
 export const store = createStore(persistedReducer, undefined, composedEnhancers); //undefine because the second argument its for additional default states
+
+sagaMiddleware.run(rootSaga); //needs to run after the createStore
 
 export const persistor = persistStore(store);
