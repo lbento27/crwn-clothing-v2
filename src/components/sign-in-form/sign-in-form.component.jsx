@@ -1,6 +1,9 @@
 import { useState, useContext } from 'react'; // eslint-disable-line
 
-import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
+import { useDispatch } from 'react-redux';
+import { googleSignInStart, emailSignInStart } from '../../store/user/user.action';
+
+//import { signInWithGooglePopup,signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
 
 import FormInput from '../form-input/form-input.component';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
@@ -13,6 +16,8 @@ const defaultFormFields = {
 };
 
 const SingInForm = () => {
+  const dispatch = useDispatch();
+
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
@@ -29,7 +34,8 @@ const SingInForm = () => {
     event.preventDefault(); //stop o normal form process so we can handle it
 
     try {
-      await signInAuthUserWithEmailAndPassword(email, password);
+      //await signInAuthUserWithEmailAndPassword(email, password);
+      dispatch(emailSignInStart(email, password));
       resetFormFields();
     } catch (error) {
       //console.log(error);
@@ -47,7 +53,8 @@ const SingInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    await signInWithGooglePopup();
+    //await signInWithGooglePopup();
+    dispatch(googleSignInStart());
   };
 
   return (

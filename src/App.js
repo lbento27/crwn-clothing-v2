@@ -3,9 +3,11 @@ import { useDispatch } from 'react-redux';
 
 import { Routes, Route } from 'react-router-dom';
 
-import { onAuthStateChangedListener, createUserDocumentFromAuth } from './utils/firebase/firebase.utils';
+//import { onAuthStateChangedListener, createUserDocumentFromAuth } from './utils/firebase/firebase.utils';
+//import { getCurrentUser } from './utils/firebase/firebase.utils';
+import { checkUserSession } from './store/user/user.action';
 
-import { setCurrentUser } from './store/user/user.action';
+//import { setCurrentUser } from './store/user/user.action';
 
 import Navigation from './routes/navigation/navigation.component';
 import Home from './routes/home/home.component';
@@ -17,13 +19,8 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
-      if (user) {
-        createUserDocumentFromAuth(user);
-      }
-      dispatch(setCurrentUser(user));
-    });
-    return unsubscribe;
+    //getCurrentUser().then((user) => console.log(user));
+    dispatch(checkUserSession());
   }, []); // eslint-disable-line
   //we don't need to pass where [dispatch], its only for the lint error to disappear, dispatch never change its the same as []
 

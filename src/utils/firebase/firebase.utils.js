@@ -66,8 +66,8 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
   }
 
   //if user data exists
-  return userDocRef;
-  //return userDocRef
+  //return userDocRef;
+  return userSnapShot; //now for sagas
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -123,3 +123,17 @@ export const getCategoriesAndDocuments = async () => {
   return categoryMap;*/
   return querySnapshot.docs.map((docSnapshot) => docSnapshot.data()); //gives back the categories as an array
 };
+
+export const getCurrentUser = () => {
+  //convert from an observer listener to a promise base function call
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe(); //prevent memory leak
+        resolve(userAuth);
+      },
+      reject,
+    );
+  });
+}; //giver back userAuth
