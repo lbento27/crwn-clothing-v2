@@ -13,6 +13,8 @@ export const setCurrentUser = (user) => {
   SIGN_IN_SUCCESS: 'user/SIGN_IN_SUCCESS',
   SIGN_IN_FAILURE: 'user/SIGN_IN_FAILURE', */
 
+//this down "fire" the user action types and send the payload, and the sagas are listening to this user action types and do something, and receive the payload
+
 export const checkUserSession = () => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION);
 
 export const googleSignInStart = () => createAction(USER_ACTION_TYPES.GOOGLE_SIGN_IN_START);
@@ -23,3 +25,11 @@ export const emailSignInStart = (email, password) =>
 export const signInSuccess = (user) => createAction(USER_ACTION_TYPES.SIGN_IN_SUCCESS, user);
 
 export const signInFailed = (error) => createAction(USER_ACTION_TYPES.SIGN_IN_FAILED, error);
+
+export const signUpStart = (email, password, displayName) =>
+  createAction(USER_ACTION_TYPES.SIGN_UP_START, { email, password, displayName }); //second argument payload but as an obj
+
+export const signUpSuccess = (user, additionalDetails) =>
+  createAction(USER_ACTION_TYPES.SIGN_UP_SUCCESS, { user, additionalDetails });
+
+export const signUpFailed = (error) => createAction(USER_ACTION_TYPES.SIGN_UP_FAILED, error);

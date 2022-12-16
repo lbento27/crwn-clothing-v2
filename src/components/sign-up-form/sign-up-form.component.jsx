@@ -1,6 +1,9 @@
 import { useState, useContext } from 'react'; // eslint-disable-line
+import { useDispatch } from 'react-redux';
 
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
+//import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
+import { signUpStart } from '../../store/user/user.action';
+
 //import { UserContext } from '../../contexts/user.context';
 
 import FormInput from '../form-input/form-input.component';
@@ -16,6 +19,8 @@ const defaultFormFields = {
 };
 
 const SingUpForm = () => {
+  const dispatch = useDispatch();
+
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
@@ -37,11 +42,12 @@ const SingUpForm = () => {
     }
 
     try {
-      const response = await createAuthUserWithEmailAndPassword(email, password);
+      /*const response = await createAuthUserWithEmailAndPassword(email, password);
       //console.log(response);
       const { user } = response;
 
-      await createUserDocumentFromAuth(user, { displayName });
+      await createUserDocumentFromAuth(user, { displayName });*/
+      dispatch(signUpStart(email, password, displayName));
       resetFormFields();
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
