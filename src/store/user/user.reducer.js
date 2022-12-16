@@ -17,9 +17,16 @@ export const userReducer = (state = INITIAL_STATE, action) => {
         currentUser: payload,
       };
     case USER_ACTION_TYPES.SIGN_IN_FAILED:
+    case USER_ACTION_TYPES.SIGN_UP_FAILED:
+    case USER_ACTION_TYPES.SIGN_OUT_FAILED:
       return {
         ...state,
         error: payload,
+      };
+    case USER_ACTION_TYPES.SIGN_OUT_SUCCESS:
+      return {
+        ...state,
+        currentUser: null,
       };
     default:
       return state; //this tells that the action doesn't affect this reducer, object doesn't change, no reducer update no rerender this component
