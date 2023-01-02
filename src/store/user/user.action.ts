@@ -1,3 +1,4 @@
+import { User } from 'firebase/auth';
 import { UserData, AdditionalInformation } from './../../utils/firebase/firebase.utils';
 import { createAction, withMatcher, ActionWithPayload, Action } from '../../utils/reducer/reducer.utils';
 
@@ -26,7 +27,7 @@ export type SignUpStart = ActionWithPayload<
 
 export type SignUpSuccess = ActionWithPayload<
   USER_ACTION_TYPES.SIGN_UP_SUCCESS,
-  { user: UserData; additionalDetails: AdditionalInformation }
+  { user: User; additionalDetails: AdditionalInformation }
 >;
 
 export type SignUpFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_FAILED, Error>;
@@ -63,7 +64,7 @@ export const emailSignInStart = withMatcher(
 );
 
 export const signInSuccess = withMatcher(
-  (user: UserData): SignInSuccess => createAction(USER_ACTION_TYPES.SIGN_IN_SUCCESS, user),
+  (user: UserData & { id: string }): SignInSuccess => createAction(USER_ACTION_TYPES.SIGN_IN_SUCCESS, user),
 );
 
 export const signInFailed = withMatcher(
@@ -76,7 +77,7 @@ export const signUpStart = withMatcher(
 ); //second argument payload but as an obj
 
 export const signUpSuccess = withMatcher(
-  (user: UserData, additionalDetails: AdditionalInformation): SignUpSuccess =>
+  (user: User, additionalDetails: AdditionalInformation): SignUpSuccess =>
     createAction(USER_ACTION_TYPES.SIGN_UP_SUCCESS, { user, additionalDetails }),
 );
 
