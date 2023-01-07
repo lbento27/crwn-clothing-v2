@@ -18,5 +18,5 @@
       //"noImplicitAny": false
       "downlevelIteration": true,
     },
-    "include": ["src"]
+    "include": ["src", "src/custom.d.ts"]
   }  

@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'; // eslint-disable-line
+import { useState, useContext, FormEvent, ChangeEvent } from 'react'; // eslint-disable-line
 
 import { useDispatch } from 'react-redux';
 import { googleSignInStart, emailSignInStart } from '../../store/user/user.action';
@@ -9,6 +9,7 @@ import FormInput from '../form-input/form-input.component';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 
 import { ButtonsContainer, SignInContainer } from './sign-in-form-styles';
+import { AuthError, AuthErrorCodes } from 'firebase/auth';
 
 const defaultFormFields = {
   email: '',
@@ -25,12 +26,12 @@ const SingInForm = () => {
     setFormFields(defaultFormFields);
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target; // get name from the inputs to distinguish each input, in the input the name most be equal to the state object name
     setFormFields({ ...formFields, [name]: value }); //spread other fields, and only update the appropriate form field
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); //stop o normal form process so we can handle it
 
     try {
@@ -39,11 +40,13 @@ const SingInForm = () => {
       resetFormFields();
     } catch (error) {
       //console.log(error);
-      switch (error.code) {
-        case 'auth/wrong-password':
+      switch ((error as AuthError).code) {
+        //case 'auth/wrong-password':
+        case AuthErrorCodes.INVALID_PASSWORD:
           alert('incorrect password for email');
           break;
-        case 'auth/user-not-found':
+        //case 'auth/user-not-found':
+        case AuthErrorCodes.USER_DELETED:
           alert('no user associated with this email');
           break;
         default:
