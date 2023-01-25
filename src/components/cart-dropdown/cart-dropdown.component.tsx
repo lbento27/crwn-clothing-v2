@@ -9,15 +9,18 @@ import { selectCartItems } from '../../store/cart/cart.selector';
 
 import Button from '../button/button.component';
 import CartItem from '../cart-item/cart-item.component';
+import { useCallback } from 'react';
 
 const CartDropDown = () => {
   //const { cartItems } = useContext(CartContext);
   const cartItems = useSelector(selectCartItems);
 
   const navigate = useNavigate();
-  const goToCheckOutHandler = () => {
+
+  const goToCheckOutHandler = useCallback(() => {
     navigate('/checkout');
-  };
+  }, [navigate]);
+
   return (
     <CartDropDownContainer>
       <CartItems>

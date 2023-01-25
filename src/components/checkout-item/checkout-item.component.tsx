@@ -12,14 +12,15 @@ import {
   Value,
 } from './checkout-item.styles';
 
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { CartItem } from '../../store/cart/cart.types';
 
 type CheckoutItemProps = {
   cartItem: CartItem;
 };
 
-const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
+// eslint-disable-next-line react/display-name
+const CheckoutItem: FC<CheckoutItemProps> = memo(({ cartItem }) => {
   const { name, imageUrl, price, quantity } = cartItem;
 
   const cartItems = useSelector(selectCartItems);
@@ -44,6 +45,6 @@ const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
       <RemoveButton onClick={clearItemHandler}>&#10005;</RemoveButton>
     </CheckoutItemContainer>
   );
-};
+});
 
 export default CheckoutItem;
