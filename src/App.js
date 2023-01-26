@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 
 import { Routes, Route } from 'react-router-dom';
 
+import { GlobalStyle } from './global.styles';
+
 //import { onAuthStateChangedListener, createUserDocumentFromAuth } from './utils/firebase/firebase.utils';
 //import { getCurrentUser } from './utils/firebase/firebase.utils';
 import { checkUserSession } from './store/user/user.action';
@@ -35,6 +37,7 @@ const App = () => {
   //index makes the 'default' component to render with the parent in the parent path
   return (
     <Suspense fallback={<Spinner />}>
+      <GlobalStyle />
       <Routes>
         <Route path='/' element={<Navigation />}>
           <Route index element={<Home />} />
