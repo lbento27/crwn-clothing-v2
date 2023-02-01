@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState, Fragment } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { selectCategoriesIsLoading, selectCategoriesMap } from '../../store/categories/category.selector';
@@ -8,6 +8,8 @@ import ProductCard from '../../components/product-card/product-card.component';
 import Spinner from '../../components/spinner/spinner.component';
 
 import { CategoryContainer, Title } from './category.styles';
+
+import { CategoryPreviewContainer } from '../../components/category-preview/category-preview.styles';
 
 type CategoryRouteParams = {
   category: string;
@@ -25,7 +27,8 @@ const Category = () => {
   }, [category, categoriesMap]);
 
   return (
-    <Fragment>
+    //<Fragment>
+    <CategoryPreviewContainer>
       <Title>{category.toLocaleUpperCase()}</Title>
       {isLoading ? (
         <Spinner />
@@ -34,7 +37,8 @@ const Category = () => {
           {products && products.map((product) => <ProductCard key={product.id} product={product} />)}
         </CategoryContainer>
       )}
-    </Fragment>
+    </CategoryPreviewContainer>
+    //</Fragment>
   );
 };
 
