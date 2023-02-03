@@ -6,10 +6,15 @@ export const CategoryContainer = styled.div`
   column-gap: 20px;
   //row-gap: 50px;
   @media screen and (max-width: 800px) {
-    display: grid;
+    //display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 15px;
+    //column-gap: 15px;
     align-items: center;
+    grid-column-gap: 15px;
+    grid-row-gap: 25px;
+  }
+  @media screen and (max-width: 400px) {
+    grid-template-columns: 1fr;
   }
 `;
 
